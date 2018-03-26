@@ -4,6 +4,7 @@
 
 ### 1. Get select attribute options 
 ```
+<?php
    // Fetch attribute key object using attribute handle, you can replace "test_attribute" with your handle;
    $attibute_key = Concrete\Core\Attribute\Key\CollectionKey::getByHandle('test_attribute');
 
@@ -27,3 +28,43 @@
      
    }
    ```
+ 
+ ### *concrete5.8.0*
+ 
+ ### 1. Get all file inside a file manager folder programmatically
+```
+<?php
+use Concrete\Core\Tree\Node\Type\FileFolder;
+use Concrete\Core\File\FolderItemList;
+
+// First grab the folder object
+$folder = FileFolder::getNodeByName('Testing Folder');
+
+if (is_object($folder)) {
+    $files = [];
+    // if we have a folder we need to grab everything inside and then
+    // recursively go through the folder's content
+    // if what we get is a file we list it
+    // otherwise if it's another folder we go through it as well
+    $walk = function ($folder) use (&$files, &$walk) {
+            $list = new FolderItemList();
+            $list->filterByParentFolder($folder);
+            $list->sortByNodeName();
+            $nodes = $list->getResults();
+
+            foreach ($nodes as $node) {
+                if ($node->getTreeNodeTypeHandle() === 'file'){
+                    $files[] = $node->getTreeNodeFileObject();
+                } elseif ($node->getTreeNodeTypeHandle() === 'file_folder'){
+                    $walk($node);
+                }
+            }
+        };
+    $walk($folder);
+
+    // we are done going through all the folders, we now have our file nodes
+    foreach ($files as $file) {
+        echo sprintf('%sfile name is %s and URL is %s%s', '<p>', $file->getTitle(), $file->getURL(), '</p>');
+    }
+}
+```
