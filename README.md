@@ -31,7 +31,7 @@
  
  ### *concrete5.8.0*
  
- ### 1. Get all file inside a file manager folder programmatically
+ ### 1. Get all files inside a file manager folder programmatically
  _For more info please refer this link  https://stackoverflow.com/questions/46924783/concrete5-cms-get-all-file-inside-a-file-manager-folder-programmatically_
 ```
 <?php
