@@ -69,3 +69,22 @@ if (is_object($folder)) {
     }
 }
 ```
+
+### 2. Create and Delete folders/files 
+
+```
+use Concrete\Flysystem\Filesystem;
+
+use Concrete\Flysystem\Adapter\Local;
+
+$root = __DIR__.'/files';
+
+$adapter = new Local($root);
+
+$filesystem = new Filesystem($adapter);
+
+$filesystem->deleteDir('/some/files');
+
+$filesystem->createDir('/some/files');
+
+```
